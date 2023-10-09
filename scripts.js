@@ -12,13 +12,21 @@ const WINNING_COMBINATION = [
 const gameBoxes = document.querySelectorAll(".game-box");
 const cellElements = document.querySelectorAll('[data-cell]');
 const board = document.getElementById('board');
+const modal = document.getElementById("myModal");
+const playAgainButton = document.querySelector('.play-again');
+const winningMsgText = document.querySelector('.win-text');
+
 let circleTurn;
 
 startGame();
 
 function startGame() {
+    modal.style.display = "none";
     circleTurn = false;
     cellElements.forEach(cell => {
+        cell.classList.remove(X_CLASS);
+        cell.classList.remove(O_CLASS);
+        cell.removeEventListener('click', handleClick);
         cell.addEventListener('click', handleClick, {once: true})
     });
     setBoardHoverClass();
@@ -29,13 +37,32 @@ function handleClick(e) {
     const currentClass = circleTurn ? O_CLASS : X_CLASS;
     placeMark(cell, currentClass);
     if(checkWin(currentClass)){
-        console.log(currentClass);
+        endGame(false);
         console.log("Win");
+    } else if(isDraw()){
+        endGame(true);
+    } else{
+        swapTurns();
+        setBoardHoverClass();
     }
 
-    swapTurns();
-    console.log("Cell Clicked");
-    setBoardHoverClass();
+}
+
+function isDraw() {
+    return[...cellElements].every(cell =>{
+        return cell.classList.contains(X_CLASS) ||
+        cell.classList.contains(O_CLASS);
+    })
+}
+
+function endGame(draw) {
+    if(draw){
+        winningMsgText.innerHTML = "It's a Draw";
+    } else{
+        winningMsgText.innerHTML = `${circleTurn ? "O" : "X"} Win `;
+    }
+
+    modal.style.display = "block";
 }
 
 function checkWin(currentClass) {
@@ -65,12 +92,4 @@ function setBoardHoverClass() {
     }
 }
 
-gameBoxes.forEach(trigger => trigger.addEventListener('click', clickBox))
-
-function gameBoard() {
-    
-}
-
-function clickBox() {
-    
-}
+playAgainButton.addEventListener('click', startGame);
