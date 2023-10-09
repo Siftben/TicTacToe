@@ -1,0 +1,126 @@
+*, *::after, *::before{
+    box-sizing: border-box;
+}
+
+:root{
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * .9);
+}
+
+html, body{
+    height: 100%;
+    padding: 15px;
+    margin: 0;
+}
+
+.header{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.board{
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, auto);
+}
+
+.game-box{
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.game-box.x, .game-box.o{
+    cursor: not-allowed;
+}
+
+.game-box:first-child,
+.game-box:nth-child(2),
+.game-box:nth-child(3){
+    border-top: none;
+}
+
+.game-box:nth-child(3n + 1){
+    border-left: none;
+}
+
+.game-box:nth-child(3n + 3){
+    border-right: none;
+}
+
+.game-box:last-child,
+.game-box:nth-child(7),
+.game-box:nth-child(8){
+    border-bottom: none;
+}
+
+.game-box.x::before,
+.game-box.x::after{
+    background-color: black;
+}
+
+.board.x .game-box:not(.x):not(.o):hover::before, 
+.board.x .game-box:not(.x):not(.o):hover::after{
+    background-color: lightgrey;
+}
+
+.game-box.x::before,
+.game-box.x::after ,
+.board.x .game-box:not(.x):not(.o):hover::before, 
+.board.x .game-box:not(.x):not(.o):hover::after{
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-size) * .15);
+    height: var(--mark-size);
+}
+
+.game-box.x::before,
+.board.x .game-box:not(.x):not(.o):hover::before {
+    transform: rotate(45deg);
+}
+
+.game-box.x::after, 
+.board.x .game-box:not(.x):not(.o):hover::after{
+    transform:rotate(-45deg);
+}
+
+.game-box.o::before,
+.game-box.o::after{
+    background-color: black;
+}
+
+.board.o .game-box:not(.x):not(.o):hover::before, 
+.board.o .game-box:not(.x):not(.o):hover::after{
+    background-color: lightgrey;
+}
+
+.game-box.o::before,
+.game-box.o::after ,
+.board.o .game-box:not(.x):not(.o):hover::before, 
+.board.o .game-box:not(.x):not(.o):hover::after{
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.game-box.o::before,
+.board.o .game-box:not(.x):not(.o):hover::before{
+    width: var(--mark-size);
+    height: var(--mark-size);
+}
+
+.game-box.o::after, 
+.board.o .game-box:not(.x):not(.o):hover::after{
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background-color: white;
+}
